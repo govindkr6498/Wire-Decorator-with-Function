@@ -1,0 +1,11 @@
+<template>
+    <lightning-card  variant="Narrow"  title="Wire Decorator with function" icon-name="standard:account">
+        <div style="height: 300px;">
+            <lightning-datatable
+                    key-field="id"
+                    data={accounts}
+                    columns={columns}>
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+</template>
