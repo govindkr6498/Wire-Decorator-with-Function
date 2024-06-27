@@ -1,0 +1,34 @@
+import { LightningElement,wire } from 'lwc';
+import getAccountData from '@salesforce/apex/AccountHelper.getAccountData';
+const columns = [
+    { label: 'Name', fieldName: 'Name' },
+    { label: 'Industry', fieldName: 'Industry'},
+    { label: 'Rating', fieldName: 'Rating'},
+];
+export default class WireDecoratorWithFunction extends LightningElement {
+    accounts;
+    errors;
+    columns = columns;
+    @wire(getAccountData) 
+    account({error,data}){
+        if(data){
+           let updatedAccounts  = data.map(currItem=>{
+                let updatedObject = {};
+                if(!currItem.hasOwnProperty('Rating')){
+                    updatedObject = {...currItem,Rating:'Warm'};
+                }else{
+                    updatedObject = {...currItem};
+                }
+                return updatedObject;
+            })
+            this.accounts = [...updatedAccounts];
+            this.errors = null;
+            console.log(" data: ",data);
+            console.log('updatedAccounts : ',updatedAccounts);
+        }else if(error){
+            this.errors = error;
+            this.accounts = null;
+            console.log('error: '.error);
+        }
+    }
+}
